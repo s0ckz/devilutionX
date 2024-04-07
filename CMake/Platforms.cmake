@@ -33,6 +33,8 @@ elseif(TARGET_PLATFORM STREQUAL "lepus")
   include(platforms/lepus)
 elseif(TARGET_PLATFORM STREQUAL "miyoo_mini")
   include(platforms/miyoo_mini)
+elseif(TARGET_PLATFORM STREQUAL "trimui_smart_pro")
+  include(platforms/trimui_smart_pro)
 endif()
 
 if(NINTENDO_SWITCH)
