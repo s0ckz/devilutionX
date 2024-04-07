@@ -13,8 +13,7 @@ main() {
 	rm -f "$BUILD_DIR/CMakeCache.txt"
 	cmake_configure -DCMAKE_BUILD_TYPE=Release
 	cmake_build
-#	package_onion
-#	package_miniui
+	package_trimui
 }
 
 cmake_configure() {
@@ -30,81 +29,28 @@ cmake_build() {
 	cmake --build "$BUILD_DIR" -j $(getconf _NPROCESSORS_ONLN)
 }
 
-build_custom_sdl() {
-	# make clean folder for custom SDL build
-	rm -rf $BUILD_DIR/CustomSDL
-	mkdir  $BUILD_DIR/CustomSDL
-
-	# clone the repo and build the lib
-	cd $BUILD_DIR/CustomSDL
-	git clone $MIYOO_CUSTOM_SDL_REPO --branch $MIYOO_CUSTOM_SDL_BRANCH --single-branch .
-
-	PATH="/opt/miyoomini-toolchain/usr/bin:${PATH}:/opt/miyoomini-toolchain/usr/arm-linux-gnueabihf/sysroot/bin" \
-	CROSS_COMPILE=/opt/miyoomini-toolchain/usr/bin/arm-linux-gnueabihf- \
-	PREFIX=/opt/miyoomini-toolchain/usr/arm-linux-gnueabihf/sysroot/usr \
-	UNION_PLATFORM=miyoomini \
-	./make.sh
-
-	# change back to devilutionx root
-	cd "$PACKAGING_DIR/../.."
-	cp -rfL "$BUILD_DIR/CustomSDL/build/.libs/libSDL-1.2.so.0" "$BUILD_DIR/OnionOS/Roms/PORTS/Binaries/Diablo.port/lib/libSDL-1.2.so.0"
-}
-
-prepare_onion_skeleton() {
-	mkdir -p $BUILD_DIR/OnionOS
-
-	# Copy basic skeleton
-	cp -rf  Packaging/miyoo_mini/skeleton_OnionOS/* $BUILD_DIR/OnionOS
-
-	# ensure devilutionx asset dir
-	mkdir -p $BUILD_DIR/OnionOS/Roms/PORTS/Binaries/Diablo.port/assets
-
-	# ensure lib dir for custom SDL
-	mkdir -p $BUILD_DIR/OnionOS/Roms/PORTS/Binaries/Diablo.port/lib
-
-	# ensure config dir
-	mkdir -p $BUILD_DIR/OnionOS/Saves/CurrentProfile/config/DevilutionX
-
-	# ensure save dir
-	mkdir -p $BUILD_DIR/OnionOS/Saves/CurrentProfile/saves/DevilutionX
-}
-
-package_onion() {
-	prepare_onion_skeleton
-	build_custom_sdl
-	# copy assets
-	cp -rf $BUILD_DIR/assets/* $BUILD_DIR/OnionOS/Roms/PORTS/Binaries/Diablo.port/assets
-	# copy executable
-	cp -f $BUILD_DIR/devilutionx $BUILD_DIR/OnionOS/Roms/PORTS/Binaries/Diablo.port/devilutionx
-
-	rm -f $BUILD_DIR/onion.zip
-
-	cd $BUILD_DIR/OnionOS
-	zip -r ../devilutionx-miyoo-mini-onion-os.zip .
-	cd "$PACKAGING_DIR/../.."
-}
-
-prepare_miniui_skeleton() {
-	mkdir -p $BUILD_DIR/MiniUI
+prepare_trimui_skeleton() {
+	rm -fr $BUILD_DIR/TrimUI
+	mkdir -p $BUILD_DIR/TrimUI
 
 	# copy basic skeleton
-	cp -rf  Packaging/miyoo_mini/skeleton_MiniUI/* $BUILD_DIR/MiniUI
+	cp -rf  Packaging/trimui_smart_pro/skeleton_TrimUI/* $BUILD_DIR/TrimUI
 
 	# ensure devilutionx asset dir
-	mkdir -p $BUILD_DIR/MiniUI/Diablo/assets
+	mkdir -p $BUILD_DIR/TrimUI/Apps/DevilutionX/assets
 }
 
-package_miniui() {
-	prepare_miniui_skeleton
+package_trimui() {
+	prepare_trimui_skeleton
 	# copy assets
-	cp -rf $BUILD_DIR/assets/* $BUILD_DIR/MiniUI/Diablo/assets
+	cp -rf $BUILD_DIR/assets/* $BUILD_DIR/TrimUI/Apps/DevilutionX/assets
 	# copy executable
-	cp -f $BUILD_DIR/devilutionx $BUILD_DIR/MiniUI/Diablo/devilutionx
+	cp -f $BUILD_DIR/devilutionx $BUILD_DIR/TrimUI/Apps/DevilutionX/devilutionx
 
-	rm -f $BUILD_DIR/miniui.zip
+	rm -f $BUILD_DIR/devilutionx-trimui-smart-pro.zip
 
-	cd $BUILD_DIR/MiniUI
-	zip -r ../devilutionx-miyoo-mini-miniui.zip .
+	cd $BUILD_DIR/TrimUI
+	zip -r ../devilutionx-trimui-smart-pro.zip .
 	cd "$PACKAGING_DIR/../.."
 }
 

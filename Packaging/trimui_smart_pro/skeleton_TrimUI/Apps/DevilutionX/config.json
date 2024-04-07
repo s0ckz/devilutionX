@@ -1,0 +1,8 @@
+{
+"package":"com.devilutionx",
+"label":"Devilution X",
+"icon":"icon.png",
+"iconsel":"icon.png",
+"launch":"launch.sh",
+"description":"Port of Diablo / Hellfire"
+}
