@@ -3,7 +3,7 @@ set -euo pipefail
 
 declare -r PACKAGING_DIR=`cd -- "$(dirname "$0")" >/dev/null 2>&1; pwd -P`
 declare -r CFLAGS="-O3 -marm -mtune=cortex-a35 -march=armv8-a -Wall"
-declare -r LDFLAGS="-lSDL -lmi_sys -lmi_gfx -s -lSDL -lSDL_image"
+#declare -r LDFLAGS="-lSDL -lmi_sys -lmi_gfx -s -lSDL -lSDL_image"
 declare -r BUILD_DIR="build-trimui-smart-pro"
 
 main() {
@@ -19,7 +19,7 @@ main() {
 
 cmake_configure() {
 	cmake -S. -B"$BUILD_DIR" \
-		-DTARGET_PLATFORM=miyoo_mini \
+		-DTARGET_PLATFORM=trimui_smart_pro \
 		-DCMAKE_BUILD_TYPE=Release \
 		-DCMAKE_TOOLCHAIN_FILE="${PACKAGING_DIR}/toolchainfile.cmake" \
 		-DBUILD_TESTING=OFF \

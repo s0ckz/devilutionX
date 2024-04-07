@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.13)
+cmake_minimum_required(VERSION 3.15)
 
 foreach(_policy CMP0111 CMP0126 CMP0135)
   if(POLICY ${_policy})
